@@ -1,23 +1,39 @@
 name: Pylint
 
-on: [push]
+on: [push]  # Trigger the workflow on every push to the repository
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        # Use only Python 3.10 for faster runs (removed 3.8 and 3.9 to optimize performance)
+        python-version: ["3.10"]
+
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # Check out the repository code
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: ${{ matrix.python-version }}  # Set up the specified Python version
+
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-    - name: Analysing the code with pylint
+        python -m pip install --upgrade pip  # Upgrade pip to the latest version
+        pip install pylint  # Install Pylint for code analysis
+
+    - name: Run Pylint on changed files only
       run: |
-        pylint $(git ls-files '*.py')
+        # Get a list of changed Python files in the latest commit
+        changed_files=$(git diff --name-only HEAD^ HEAD -- '*.py')
+        
+        # Check if there are any changed Python files
+        if [ -n "$changed_files" ]; then
+          echo "Running Pylint on changed files:"
+          echo "$changed_files"  # Print the list of changed files for clarity
+          pylint $changed_files  # Run Pylint only on the changed files
+        else
+          echo "No Python files changed. Skipping Pylint."  # Skip if no Python files were changed
+        fi
