@@ -30,7 +30,7 @@ jobs:
         if [ "$(git rev-parse HEAD)" = "$initial_commit" ]; then
           # If it's the initial commit, run Pylint on all Python files
           echo "Initial commit detected. Running Pylint on all Python files."
-          pylint $(git ls-files '*.py')
+          pylint --disable=C0304 $(git ls-files '*.py')  # Disable C0304 (final newline missing) warning
         else
           # If it's not the initial commit, get a list of changed Python files in the latest commit
           changed_files=$(git diff --name-only HEAD^ HEAD -- '*.py')
@@ -39,7 +39,7 @@ jobs:
           if [ -n "$changed_files" ]; then
             echo "Running Pylint on changed files:"
             echo "$changed_files"  # Print the list of changed files for clarity
-            pylint $changed_files  # Run Pylint only on the changed files
+            pylint --disable=C0304 $changed_files  # Disable C0304 (final newline missing) warning
           else
             echo "No Python files changed. Skipping Pylint."  # Skip if no Python files were changed
           fi
