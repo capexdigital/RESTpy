@@ -11,10 +11,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 api = Api(app)
 
-# Define UserModel
+# pylint: disable=too-few-public-methods
 class UserModel(db.Model):
     """
-    Represents a user in the database.
+    Represents user in the database.
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
