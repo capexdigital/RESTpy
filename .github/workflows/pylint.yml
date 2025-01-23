@@ -1,5 +1,4 @@
 name: Pylint
-
 on: [push]  # Trigger the workflow on every push to the repository
 
 jobs:
@@ -26,14 +25,24 @@ jobs:
 
     - name: Run Pylint on changed files only
       run: |
-        # Get a list of changed Python files in the latest commit
-        changed_files=$(git diff --name-only HEAD^ HEAD -- '*.py')
-        
-        # Check if there are any changed Python files
-        if [ -n "$changed_files" ]; then
-          echo "Running Pylint on changed files:"
-          echo "$changed_files"  # Print the list of changed files for clarity
-          pylint $changed_files  # Run Pylint only on the changed files
+        # Get the initial commit hash (the very first commit in the repository)
+        initial_commit=$(git rev-list --max-parents=0 HEAD)
+
+        # Check if the current commit is the initial commit
+        if [ "$(git rev-parse HEAD)" = "$initial_commit" ]; then
+          # If it's the initial commit, run Pylint on all Python files
+          echo "Initial commit detected. Running Pylint on all Python files."
+          pylint $(git ls-files '*.py')
         else
-          echo "No Python files changed. Skipping Pylint."  # Skip if no Python files were changed
+          # If it's not the initial commit, get a list of changed Python files in the latest commit
+          changed_files=$(git diff --name-only HEAD^ HEAD -- '*.py')
+          
+          # Check if there are any changed Python files
+          if [ -n "$changed_files" ]; then
+            echo "Running Pylint on changed files:"
+            echo "$changed_files"  # Print the list of changed files for clarity
+            pylint $changed_files  # Run Pylint only on the changed files
+          else
+            echo "No Python files changed. Skipping Pylint."  # Skip if no Python files were changed
+          fi
         fi
