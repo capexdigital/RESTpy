@@ -1,27 +1,25 @@
 name: Pylint
-on: [push]  # Trigger the workflow on every push to the repository
+
+on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest  #Latest Ubuntu environment
-
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Use only Python 3.10 for faster runs (removed 3.8 and 3.9 to optimize performance)
         python-version: ["3.10"]
-
     steps:
-    - uses: actions/checkout@v4  # Check out the repository code
+    - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}  # Set up the specified Python version
+        python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip  # Upgrade pip to the latest version
-        pip install pylint  # Install Pylint for code analysis
+        python -m pip install --upgrade pip
+        pip install pylint flask flask_sqlalchemy flask_restful
 
     - name: Run Pylint on changed files only
       run: |
