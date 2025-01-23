@@ -1,10 +1,9 @@
 name: Pylint
-
 on: [push]  # Trigger the workflow on every push to the repository
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+    runs-on: ubuntu-latest  #Latest Ubuntu environment
 
     strategy:
       matrix:
