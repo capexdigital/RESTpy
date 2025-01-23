@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         # Use only Python 3.10 for faster runs (removed 3.8 and 3.9 to optimize performance)
-        python-version: ["3.9"]
+        python-version: ["3.10"]
 
     steps:
     - uses: actions/checkout@v4  # Check out the repository code
