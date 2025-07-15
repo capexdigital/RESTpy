@@ -150,6 +150,6 @@ def home():
     """
     return render_template('index.html')
 
-# Run the application
+# Run
 if __name__ == '__main__':
     app.run(debug=True)
