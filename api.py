@@ -1,7 +1,3 @@
-"""
-This module defines the API endpoints and database models for a Flask application.
-"""
-
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length
