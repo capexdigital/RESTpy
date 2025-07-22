@@ -1,7 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-import sqlite3
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
 
+#CONFIG WTF KEY
+# app.config['WTF_CSRF_SECRET_KEY'] = 'another-secret-key'
+
+# Initialize Flask application
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # needed for sessions
 
@@ -93,4 +100,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
